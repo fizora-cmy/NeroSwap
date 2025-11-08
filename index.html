@@ -214,9 +214,12 @@
                 transform: translateX(0) translateY(0) scale(1);
                 opacity: 0.7;
             }
-            50% {
-                transform: translateX(-25%) translateY(-10%) scale(1.05);
-                opacity: 0.9;
+            100% {
+                /* Move 30% to the left and 5% upwards */
+                transform: translateX(-30%) translateY(-5%) scale(1.05);
+                opacity: 0.8;
+            }
+        }
             }
             100% {
                 transform: translateX(0) translateY(0) scale(1);
@@ -231,12 +234,15 @@
             height: 20px;
             background: linear-gradient(135deg, #FF0066, #9900FF);
             border-radius: 4px;
-            box-shadow: 0 0 15px rgba(255, 0, 102, 0.8), inset 0 0 10px rgba(255, 255, 255, 0.5);
-            opacity: 0.7;
+            /* Increased shadow and added blur for a softer, more glowing look */
+            box-shadow: 0 0 20px rgba(255, 0, 102, 1), inset 0 0 15px rgba(255, 255, 255, 0.7);
+            filter: blur(2px); /* Soften the edges */
+            opacity: 0.8;
             top: calc(var(--i) * 10vh + 5%);
             left: calc(var(--i) * 9vw);
-            animation: crystal-move 15s linear infinite calc(var(--i) * -1s);
+            animation: crystal-move 20s linear infinite calc(var(--i) * -2s); /* Slower and slightly delayed animation */
             z-index: 0;
+        }
         }
 
         .crystal::before, .crystal::after {
