@@ -121,14 +121,20 @@
             font-family: 'Cairo', sans-serif;
             font-size: 3em; 
             font-weight: 700;
-            color: #fff; 
-            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+            /* Removed original color and text-shadow */
+            background: linear-gradient(to right, #ffffff, #aaaaaa, #ffffff, #cccccc, #ffffff); /* Metallic gradient */
+            -webkit-background-clip: text; /* Clip background to text shape */
+            -webkit-text-fill-color: transparent; /* Make text color transparent to show background */
+            text-shadow: 0 0 15px rgba(255, 255, 255, 0.4), /* Outer glow */
+                         0 0 30px rgba(153, 0, 255, 0.2); /* Deeper purple glow */
+            letter-spacing: 2px; /* Space between letters for better effect */
             margin: 0;
             position: absolute; 
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%); 
             white-space: nowrap; 
+        }
         }
 
         .project-tagline {
