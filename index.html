@@ -44,6 +44,78 @@
             right: 0; 
             box-sizing: border-box;
         }
+        
+        /* WALLET CONNECT STYLES */
+
+        .wallet-controls {
+            position: relative; /* Container for button and dropdown */
+            display: inline-block;
+        }
+        
+        /* NOTE: We removed .enter-app-btn and used .connect-wallet-btn only */
+        .connect-wallet-btn { 
+            background: linear-gradient(135deg, #FF0066, #9900FF);
+            border: none;
+            color: white;
+            padding: 15px 30px;
+            font-size: 1.1em;
+            font-weight: 700;
+            border-radius: 30px; 
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease; 
+            box-shadow: 0 5px 15px rgba(153, 0, 255, 0.4); 
+        }
+
+        .connect-wallet-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(153, 0, 255, 0.6);
+        }
+
+        .wallet-dropdown {
+            display: none; /* Initially hidden, JS will change this */
+            position: absolute;
+            top: 60px; /* Below the button */
+            right: 0;
+            background-color: rgba(30, 0, 60, 0.9); /* Dark semi-transparent background */
+            min-width: 200px;
+            border-radius: 10px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.4);
+            z-index: 10; /* Make sure it appears above other elements */
+            padding: 10px 0;
+            backdrop-filter: blur(8px); /* Blur effect */
+            border: 1px solid rgba(153, 0, 255, 0.3);
+        }
+
+        .wallet-dropdown.show {
+            display: block; /* Class added by JS to show the menu */
+        }
+
+        .wallet-option {
+            color: white;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            transition: background-color 0.3s;
+        }
+
+        .wallet-option:hover {
+            background-color: rgba(153, 0, 255, 0.2); /* Highlight on hover */
+        }
+
+        .wallet-icon {
+            font-weight: 700;
+            margin-right: 10px;
+            width: 25px;
+            height: 25px;
+            background: #FF0066;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 25px;
+            font-size: 0.8em;
+        }
+        
+        /* END WALLET CONNECT STYLES */
 
         .project-logo {
             font-family: 'Cairo', sans-serif;
@@ -57,24 +129,6 @@
             left: 50%;
             transform: translate(-50%, -50%); 
             white-space: nowrap; 
-        }
-
-        .enter-app-btn {
-            background: linear-gradient(135deg, #FF0066, #9900FF);
-            border: none;
-            color: white;
-            padding: 15px 30px;
-            font-size: 1.1em;
-            font-weight: 700;
-            border-radius: 30px; 
-            cursor: pointer;
-            transition: transform 0.3s ease, box-shadow 0.3s ease; 
-            box-shadow: 0 5px 15px rgba(153, 0, 255, 0.4); 
-        }
-
-        .enter-app-btn:hover {
-            transform: translateY(-3px); 
-            box-shadow: 0 8px 20px rgba(153, 0, 255, 0.6);
         }
 
         .project-tagline {
@@ -228,8 +282,21 @@
         </div>
 
         <header class="main-header">
-            
-<button class="enter-app-btn">Enter App</button>
+            <div class="wallet-controls">
+                <button class="connect-wallet-btn" id="connectWalletBtn">Connect Wallet</button>
+                
+                <div class="wallet-dropdown" id="walletDropdown">
+                    <a href="#" class="wallet-option" data-wallet="MetaMask">
+                        <span class="wallet-icon" style="background-color: #f6851b;">M</span> MetaMask
+                    </a>
+                    <a href="#" class="wallet-option" data-wallet="WalletConnect">
+                        <span class="wallet-icon" style="background-color: #3b82f6;">W</span> WalletConnect
+                    </a>
+                    <a href="#" class="wallet-option" data-wallet="Coinbase">
+                        <span class="wallet-icon" style="background-color: #0052ff;">C</span> Coinbase Wallet
+                    </a>
+                </div>
+            </div>
         </header>
 
         <main class="content-area">
@@ -253,5 +320,39 @@
             </div>
         </main>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const connectBtn = document.getElementById('connectWalletBtn');
+            const dropdown = document.getElementById('walletDropdown');
+
+            // 1. Toggle dropdown visibility when the button is clicked
+            connectBtn.addEventListener('click', function(event) {
+                dropdown.classList.toggle('show');
+                event.stopPropagation(); // Prevents the click from immediately propagating to the document listener below
+            });
+
+            // 2. Hide dropdown when the user clicks anywhere else
+            document.addEventListener('click', function(event) {
+                if (!connectBtn.contains(event.target) && !dropdown.contains(event.target)) {
+                    if (dropdown.classList.contains('show')) {
+                        dropdown.classList.remove('show');
+                    }
+                }
+            });
+
+            // 3. Handle actual wallet selection (Simple alert for now)
+            const walletOptions = document.querySelectorAll('.wallet-option');
+            walletOptions.forEach(option => {
+                option.addEventListener('click', function(event) {
+                    event.preventDefault(); 
+                    const walletName = this.getAttribute('data-wallet');
+                    alert('Attempting to connect to: ' + walletName);
+                    // REAL WEB3 INTEGRATION GOES HERE
+                    dropdown.classList.remove('show'); // Hide dropdown after selection
+                });
+            });
+        });
+    </script>
 </body>
 </html>
