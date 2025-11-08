@@ -4,13 +4,228 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NeroSwap - Trade, Pool, Borrow</title>
-    <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@700&family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Montserrat', sans-serif; 
+            background-color: #000; 
+            color: #fff; 
+            overflow: hidden; 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh; 
+            position: relative; 
+        }
+
+        .landing-container {
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            z-index: 1; 
+            padding: 20px; 
+            box-sizing: border-box; 
+        }
+
+        .main-header {
+            width: 100%;
+            display: flex;
+            justify-content: flex-end; 
+            align-items: center;
+            padding: 20px 40px; 
+            position: absolute; 
+            top: 0;
+            right: 0; 
+            box-sizing: border-box;
+        }
+
+        .project-logo {
+            font-family: 'Cairo', sans-serif;
+            font-size: 3em; 
+            font-weight: 700;
+            color: #fff; 
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+            margin: 0;
+            position: absolute; 
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%); 
+            white-space: nowrap; 
+        }
+
+        .enter-app-btn {
+            background: linear-gradient(135deg, #FF0066, #9900FF);
+            border: none;
+            color: white;
+            padding: 15px 30px;
+            font-size: 1.1em;
+            font-weight: 700;
+            border-radius: 30px; 
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease; 
+            box-shadow: 0 5px 15px rgba(153, 0, 255, 0.4); 
+        }
+
+        .enter-app-btn:hover {
+            transform: translateY(-3px); 
+            box-shadow: 0 8px 20px rgba(153, 0, 255, 0.6);
+        }
+
+        .project-tagline {
+            font-size: 1.5em;
+            font-weight: 400;
+            color: rgba(255, 255, 255, 0.7); 
+            text-align: center;
+            margin-top: 150px; 
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, calc(-50% + 100px)); 
+            white-space: nowrap;
+        }
+
+        .metrics-container {
+            display: flex;
+            justify-content: center;
+            gap: 40px; 
+            width: 100%;
+            max-width: 1200px;
+            position: absolute;
+            bottom: 10%; 
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 2; 
+        }
+
+        .metric-box {
+            background-color: rgba(30, 0, 60, 0.6); 
+            border: 1px solid rgba(153, 0, 255, 0.4); 
+            border-radius: 15px;
+            padding: 25px 40px;
+            text-align: center;
+            backdrop-filter: blur(10px); 
+            box-shadow: 0 0 20px rgba(153, 0, 255, 0.3);
+            transition: transform 0.3s ease;
+        }
+
+        .metric-box:hover {
+            transform: translateY(-5px);
+        }
+
+        .metric-box h3 {
+            font-size: 1.2em;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 10px;
+        }
+
+        .metric-box p {
+            font-size: 2.5em;
+            font-weight: 700;
+            color: #FF0066; 
+            margin: 0;
+        }
+        
+        /* SMOKE EFFECT */
+        .background-elements::before {
+            content: '';
+            position: absolute;
+            bottom: -10%; 
+            right: 0;
+            width: 120%; 
+            height: 120%;
+            background: radial-gradient(ellipse at bottom right, rgba(255, 0, 102, 0.3) 0%, transparent 70%),
+                        radial-gradient(ellipse at top left, rgba(153, 0, 255, 0.5) 0%, transparent 70%);
+            background-color: rgba(153, 0, 255, 0.1); 
+            filter: blur(80px); 
+            opacity: 0.8;
+            z-index: 0;
+            animation: smoke-drift 40s linear infinite;
+            transform: translateX(0) translateY(0); 
+        }
+
+        @keyframes smoke-drift {
+            0% {
+                transform: translateX(0) translateY(0) scale(1);
+                opacity: 0.7;
+            }
+            50% {
+                transform: translateX(-25%) translateY(-10%) scale(1.05);
+                opacity: 0.9;
+            }
+            100% {
+                transform: translateX(0) translateY(0) scale(1);
+                opacity: 0.7;
+            }
+        }
+        
+        /* CRYSTAL EFFECT */
+        .crystal {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: linear-gradient(135deg, #FF0066, #9900FF);
+            border-radius: 4px;
+            box-shadow: 0 0 15px rgba(255, 0, 102, 0.8), inset 0 0 10px rgba(255, 255, 255, 0.5);
+            opacity: 0.7;
+            top: calc(var(--i) * 10vh + 5%);
+            left: calc(var(--i) * 9vw);
+            animation: crystal-move 15s linear infinite calc(var(--i) * -1s);
+            z-index: 0;
+        }
+
+        .crystal::before, .crystal::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: inherit;
+            border-radius: inherit;
+        }
+
+        .crystal::before {
+            transform: rotate(45deg);
+        }
+
+        @keyframes crystal-move {
+            0% {
+                transform: translate(0, 0) rotate(0deg) scale(0.8);
+            }
+            25% {
+                transform: translate(20vw, 15vh) rotate(90deg) scale(1);
+            }
+            50% {
+                transform: translate(-10vw, 40vh) rotate(180deg) scale(0.6);
+            }
+            75% {
+                transform: translate(30vw, 60vh) rotate(270deg) scale(1.1);
+            }
+            100% {
+                transform: translate(0, 0) rotate(360deg) scale(0.8); 
+            }
+        }
+    </style>
 </head>
 <body>
     <div class="landing-container">
         
-<div class="background-elements"></div>
+        <div class="background-elements">
+            <div class="crystal" style="--i:1;"></div>
+            <div class="crystal" style="--i:2;"></div>
+            <div class="crystal" style="--i:3;"></div>
+            <div class="crystal" style="--i:4;"></div>
+            <div class="crystal" style="--i:5;"></div>
+            <div class="crystal" style="--i:6;"></div>
+            <div class="crystal" style="--i:7;"></div>
+            <div class="crystal" style="--i:8;"></div>
+            <div class="crystal" style="--i:9;"></div>
+            <div class="crystal" style="--i:10;"></div>
+        </div>
 
         <header class="main-header">
             
